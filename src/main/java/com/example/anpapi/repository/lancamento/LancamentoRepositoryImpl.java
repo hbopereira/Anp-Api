@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 import com.example.anpapi.model.Categoria_;
 import com.example.anpapi.model.Lancamento;
 import com.example.anpapi.model.Lancamento_;
+import com.example.anpapi.model.Ocorrencia_;
 import com.example.anpapi.model.Pessoa_;
 import com.example.anpapi.repository.filter.LancamentoFilter;
 import com.example.anpapi.repository.projection.ResumoLancamento;
@@ -53,10 +54,11 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 		
 		criteria.select(builder.construct(ResumoLancamento.class
 				, root.get(Lancamento_.id), root.get(Lancamento_.descricao)
-				, root.get(Lancamento_.dataVencimento), root.get(Lancamento_.dataPagamento)
+				, root.get(Lancamento_.dataVencimento), root.get(Lancamento_.dataEmissao), root.get(Lancamento_.dataPagamento)
 				, root.get(Lancamento_.valor), root.get(Lancamento_.tipo)
 				, root.get(Lancamento_.categoria).get(Categoria_.descricao)
-				, root.get(Lancamento_.pessoa).get(Pessoa_.nome)));
+				, root.get(Lancamento_.pessoa).get(Pessoa_.nome)
+				, root.get(Lancamento_.ocorrencia).get(Ocorrencia_.descricao)));
 		
 		Predicate[] predicates = criarRestricoes(lancamentoFilter, builder, root);
 		criteria.where(predicates);
@@ -99,12 +101,20 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
 			predicates.add(builder.like(builder.lower(root.get(Lancamento_.descricao)), "%" + lancamentoFilter.getDescricao().toLowerCase() + "%"));
 		}
 		
+	//	if(!StringUtils.isEmpty(lancamentoFilter.getOcorrencia())) {
+		//	predicates.add(builder.like(builder.lower(root.get(Ocorrencia_.descricao)), "%" + lancamentoFilter.getOcorrencia().toLowerCase() + "%"));
+		//}
+		
 	    if(lancamentoFilter.getDataVencimentoDe() != null) {
 			predicates.add(builder.greaterThanOrEqualTo(root.get(Lancamento_.dataVencimento), lancamentoFilter.getDataVencimentoDe()));
 		}
 	    
 	    if(lancamentoFilter.getDataVencimentoAte() != null) {
 			predicates.add(builder.lessThanOrEqualTo(root.get(Lancamento_.dataVencimento), lancamentoFilter.getDataVencimentoAte()));
+		}
+	    
+	    if(lancamentoFilter.getDataEmissao() != null) {
+			predicates.add(builder.equal(root.get(Lancamento_.dataEmissao), lancamentoFilter.getDataEmissao()));
 		}
 		return predicates.toArray(new Predicate[predicates.size()]);
 	}

@@ -9,9 +9,13 @@ import javax.persistence.metamodel.StaticMetamodel;
 public abstract class Pessoa_ {
 
 	public static volatile SingularAttribute<Pessoa, Boolean> ativo;
+	public static volatile SingularAttribute<Pessoa, TipoPessoa> tipo;
 	public static volatile SingularAttribute<Pessoa, Endereco> endereco;
+	public static volatile SingularAttribute<Pessoa, String> cpf;
 	public static volatile SingularAttribute<Pessoa, String> nome;
 	public static volatile SingularAttribute<Pessoa, Long> id;
+	public static volatile SingularAttribute<Pessoa, String> cnpj;
+	public static volatile SingularAttribute<Pessoa, String> email;
 
 }
 

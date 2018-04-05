@@ -10,22 +10,26 @@ public class ResumoLancamento {
 	private Long id;
 	private String descricao;
 	private LocalDate dataVencimento;
+	private LocalDate dataEmissao;
 	private LocalDate dataPagamento;
 	private BigDecimal valor;
 	private TipoLancamento tipoLancamento;
 	private String categoria;
 	private String pessoa;
+	private String ocorrencia;
 	
-	public ResumoLancamento(Long id, String descricao, LocalDate dataVencimento, LocalDate dataPagamento,
-			BigDecimal valor, TipoLancamento tipoLancamento, String categoria, String pessoa) {
+	public ResumoLancamento(Long id, String descricao, LocalDate dataVencimento, LocalDate dataEmissao, LocalDate dataPagamento,
+			BigDecimal valor, TipoLancamento tipoLancamento, String categoria, String pessoa, String ocorrencia) {
 		this.id = id;
 		this.descricao = descricao;
 		this.dataVencimento = dataVencimento;
+		this.dataEmissao = dataEmissao;
 		this.dataPagamento = dataPagamento;
 		this.valor = valor;
 		this.tipoLancamento = tipoLancamento;
 		this.categoria = categoria;
 		this.pessoa = pessoa;
+		this.ocorrencia = ocorrencia;
 	}
 
 	public Long getId() {
@@ -91,6 +95,23 @@ public class ResumoLancamento {
 	public void setPessoa(String pessoa) {
 		this.pessoa = pessoa;
 	}
+
+	public String getOcorrencia() {
+		return ocorrencia;
+	}
+
+	public void setOcorrencia(String ocorrencia) {
+		this.ocorrencia = ocorrencia;
+	}
+
+	public LocalDate getDataEmissao() {
+		return dataEmissao;
+	}
+
+	public void setDataEmissao(LocalDate dataEmissao) {
+		this.dataEmissao = dataEmissao;
+	}
+	
 	
 	
 	

@@ -37,9 +37,33 @@ public class LancamentoService {
 	}
 	
 	public Lancamento atualizar(Long id, Lancamento lancamento) {
-		Lancamento lancamentoSalvo = buscarLancamentoPorId(id);
+		Lancamento lancamentoSalvo = buscarLancamentoExistente(id);
+		if (!lancamento.getPessoa().equals(lancamentoSalvo.getPessoa())) {
+			validarPessoa(lancamento);
+		}
+
 		BeanUtils.copyProperties(lancamento, lancamentoSalvo, "id");
+
 		return lancamentoRepo.save(lancamentoSalvo);
+	}
+
+	private void validarPessoa(Lancamento lancamento) {
+		Pessoa pessoa = null;
+		if (lancamento.getPessoa().getId() != null) {
+			pessoa = pessoaRepo.findOne(lancamento.getPessoa().getId());
+		}
+
+		if (pessoa == null || pessoa.isInativo()) {
+			throw new PessoaInexistenteOuInativoException();
+		}
+	}
+
+	private Lancamento buscarLancamentoExistente(Long id) {
+		Lancamento lancamentoSalvo = lancamentoRepo.findOne(id);
+		if (lancamentoSalvo == null) {
+			throw new IllegalArgumentException();
+		}
+		return lancamentoSalvo;
 	}
 	
 	private Lancamento buscarLancamentoPorId(Long id) {

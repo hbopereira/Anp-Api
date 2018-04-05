@@ -10,6 +10,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.anpapi.event.RecursoCriadoEvent;
 import com.example.anpapi.model.Pessoa;
 import com.example.anpapi.repository.PessoaRepository;
+import com.example.anpapi.repository.filter.PessoaFilter;
 import com.example.anpapi.service.PessoaService;
 
 @RestController
@@ -51,8 +54,9 @@ public class PessoaController {
 	
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA')")
-	public List<Pessoa> buscarTodosPessoas(){
-		return new ArrayList<Pessoa>(pessoaService.buscarTodos());
+	public Page<Pessoa> buscarTodosPessoas(PessoaFilter pessoaFilter, Pageable pageable){
+		//return new ArrayList<Pessoa>(pessoaService.buscarTodos());
+		return pessoaRepo.filtrar(pessoaFilter, pageable);
 	}
 	
 	@GetMapping("/{id}")

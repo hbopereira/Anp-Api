@@ -37,6 +37,11 @@ public class Lancamento {
 	private Pessoa pessoa;
 	
 	@NotNull
+	@ManyToOne
+	@JoinColumn(name="id_ocorrencia")
+	private Ocorrencia ocorrencia;
+	
+	@NotNull
 	private String descricao;
 	
 	@NotNull
@@ -45,6 +50,10 @@ public class Lancamento {
 	
 	@Column(name="data_pagamento")
 	private LocalDate dataPagamento;
+	
+	@NotNull
+	@Column(name="data_emissao")
+	private LocalDate dataEmissao;
 	
 	@NotNull
 	private BigDecimal valor;
@@ -127,16 +136,34 @@ public class Lancamento {
 		this.tipo = tipo;
 	}
 
+	public LocalDate getDataEmissao() {
+		return dataEmissao;
+	}
+
+	public void setDataEmissao(LocalDate dataEmissao) {
+		this.dataEmissao = dataEmissao;
+	}
+
+	public Ocorrencia getOcorrencia() {
+		return ocorrencia;
+	}
+
+	public void setOcorrencia(Ocorrencia ocorrencia) {
+		this.ocorrencia = ocorrencia;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((categoria == null) ? 0 : categoria.hashCode());
+		result = prime * result + ((dataEmissao == null) ? 0 : dataEmissao.hashCode());
 		result = prime * result + ((dataPagamento == null) ? 0 : dataPagamento.hashCode());
 		result = prime * result + ((dataVencimento == null) ? 0 : dataVencimento.hashCode());
 		result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((observacao == null) ? 0 : observacao.hashCode());
+		result = prime * result + ((ocorrencia == null) ? 0 : ocorrencia.hashCode());
 		result = prime * result + ((pessoa == null) ? 0 : pessoa.hashCode());
 		result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
 		result = prime * result + ((valor == null) ? 0 : valor.hashCode());
@@ -156,6 +183,11 @@ public class Lancamento {
 			if (other.categoria != null)
 				return false;
 		} else if (!categoria.equals(other.categoria))
+			return false;
+		if (dataEmissao == null) {
+			if (other.dataEmissao != null)
+				return false;
+		} else if (!dataEmissao.equals(other.dataEmissao))
 			return false;
 		if (dataPagamento == null) {
 			if (other.dataPagamento != null)
@@ -182,6 +214,11 @@ public class Lancamento {
 				return false;
 		} else if (!observacao.equals(other.observacao))
 			return false;
+		if (ocorrencia == null) {
+			if (other.ocorrencia != null)
+				return false;
+		} else if (!ocorrencia.equals(other.ocorrencia))
+			return false;
 		if (pessoa == null) {
 			if (other.pessoa != null)
 				return false;
@@ -197,8 +234,7 @@ public class Lancamento {
 		return true;
 	}
 
-	
-	
+    
 	
 	
 	
