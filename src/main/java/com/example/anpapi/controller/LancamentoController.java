@@ -1,5 +1,6 @@
 package com.example.anpapi.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +28,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.anpapi.dto.LancamentoEstatisticaCategoria;
+import com.example.anpapi.dto.LancamentoEstatisticaDia;
+import com.example.anpapi.dto.LancamentoEstatisticaOcorrencia;
 import com.example.anpapi.event.RecursoCriadoEvent;
 import com.example.anpapi.exceptionhandler.AnpExceptionHandler.Erro;
 import com.example.anpapi.model.Lancamento;
@@ -58,6 +62,25 @@ public class LancamentoController {
 		Lancamento lancamentoSalvo = lancamentoService.salvar(lancamento);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, lancamentoSalvo.getId()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(lancamentoSalvo);
+	}
+	
+	@GetMapping("/estatisticas/por-categoria")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO')")
+	public List<LancamentoEstatisticaCategoria> porCategoria(){
+		return this.lancamentoRepo.porCategoria(LocalDate.now());
+	}
+	
+	@GetMapping("/estatisticas/por-ocorrencia")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO')")
+	public List<LancamentoEstatisticaOcorrencia> porOcorrencia(){
+		return this.lancamentoRepo.porOcorrencia(LocalDate.now());
+	}
+	
+	
+	@GetMapping("/estatisticas/por-dia")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO')")
+	public List<LancamentoEstatisticaDia> porDia() {
+		return this.lancamentoRepo.porDia(LocalDate.now());
 	}
 	
 	@GetMapping
