@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Email;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -29,6 +31,7 @@ public class Pessoa {
 	@NotNull
 	private String nome;
 	
+	@Email
 	@NotNull
 	private String email;
 	

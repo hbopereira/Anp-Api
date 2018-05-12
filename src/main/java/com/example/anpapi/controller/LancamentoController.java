@@ -116,12 +116,9 @@ public class LancamentoController {
 	
 	@PutMapping("/{id}")
     public ResponseEntity<Lancamento> atualizarLancamento(@PathVariable Long id, @RequestBody @Valid Lancamento lancamento){
-		try {
-			Lancamento lancamentoSalvo = lancamentoService.atualizar(id, lancamento);
-			return ResponseEntity.ok(lancamentoSalvo);
-		} catch (IllegalArgumentException e) {
-			return ResponseEntity.notFound().build();
-		}
+		Lancamento lancamentoSalvo = lancamentoService.atualizar(id, lancamento);
+		return ResponseEntity.ok(lancamentoSalvo);
+	
 	}
 	
 	@ExceptionHandler({ PessoaInexistenteOuInativoException.class })
