@@ -20,6 +20,7 @@ import org.springframework.util.StringUtils;
 import com.example.anpapi.dto.LancamentoEstatisticaCategoria;
 import com.example.anpapi.dto.LancamentoEstatisticaDia;
 import com.example.anpapi.dto.LancamentoEstatisticaOcorrencia;
+import com.example.anpapi.dto.LancamentoEstatisticaPessoa;
 import com.example.anpapi.model.Categoria_;
 import com.example.anpapi.model.Lancamento;
 import com.example.anpapi.model.Lancamento_;
@@ -33,6 +34,35 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery {
     
 	@PersistenceContext
 	private EntityManager entityManager;
+	
+	@Override
+	public List<LancamentoEstatisticaPessoa> porPessoa(LocalDate inicio, LocalDate fim) {
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		
+		CriteriaQuery<LancamentoEstatisticaPessoa> criteriaQuery = criteriaBuilder.
+				createQuery(LancamentoEstatisticaPessoa.class);
+		
+		Root<Lancamento> root = criteriaQuery.from(Lancamento.class);
+		
+		criteriaQuery.select(criteriaBuilder.construct(LancamentoEstatisticaPessoa.class, 
+				root.get(Lancamento_.tipo),
+				root.get(Lancamento_.pessoa),
+				criteriaBuilder.sum(root.get(Lancamento_.valor))));
+		
+		criteriaQuery.where(
+				criteriaBuilder.greaterThanOrEqualTo(root.get(Lancamento_.dataVencimento), 
+						inicio),
+				criteriaBuilder.lessThanOrEqualTo(root.get(Lancamento_.dataVencimento), 
+						fim));
+		
+		criteriaQuery.groupBy(root.get(Lancamento_.tipo), 
+				root.get(Lancamento_.pessoa));
+		
+		TypedQuery<LancamentoEstatisticaPessoa> typedQuery = entityManager
+				.createQuery(criteriaQuery);
+		
+		return typedQuery.getResultList();
+	}
 	
 	@Override
 	public List<LancamentoEstatisticaDia> porDia(LocalDate mesReferencia) {

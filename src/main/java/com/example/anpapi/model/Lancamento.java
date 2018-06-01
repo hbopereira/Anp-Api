@@ -18,6 +18,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="lancamento")
 public class Lancamento {
@@ -63,6 +65,11 @@ public class Lancamento {
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	private TipoLancamento tipo;
+	
+	@JsonIgnore
+	public boolean isReceita() {
+		return TipoLancamento.RECEITA.equals(this.tipo);
+	}
 
 	public Long getId() {
 		return id;

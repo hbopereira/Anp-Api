@@ -1,5 +1,9 @@
 package com.example.anpapi.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -15,12 +19,27 @@ public class ProdutoService {
 	@Autowired
 	private ProdutoRepository prodRepo;
 	
-	public Produto salvar(Produto produto) {
+	/*public Produto salvar(Produto produto) {
 		produto.getFornecedores().forEach(c -> c.setProduto(produto));
+		return prodRepo.save(produto);
+	} */
+	
+	public Produto salvar(Produto produto) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date dataCadastro = Calendar.getInstance().getTime();
+		String dataFormatada = sdf.format(dataCadastro);
+		produto.setDataCadastro(dataFormatada);
+		
 		return prodRepo.save(produto);
 	}
 	
 	public Produto atualizar(Long id, Produto produto) {
+		Produto produtoSalvo = buscarProdutoPorId(id);
+		BeanUtils.copyProperties(produto, produtoSalvo, "id");
+		return prodRepo.save(produtoSalvo);
+	}
+	
+	/*public Produto atualizar(Long id, Produto produto) {
 		Produto produtoSalvo = buscarProdutoPorId(id);
 		
 		produtoSalvo.getFornecedores().clear();
@@ -29,7 +48,7 @@ public class ProdutoService {
 		
 		BeanUtils.copyProperties(produto, produtoSalvo, "id", "fornecedores");
 		return prodRepo.save(produtoSalvo);
-	}
+	}*/
 	
 	public Produto buscarProdutoPorId(Long id) {
 		Produto produtoSalvo = prodRepo.findOne(id);
