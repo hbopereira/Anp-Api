@@ -36,6 +36,12 @@ public class ProdutoService {
 	public Produto atualizar(Long id, Produto produto) {
 		Produto produtoSalvo = buscarProdutoPorId(id);
 		BeanUtils.copyProperties(produto, produtoSalvo, "id");
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date dataModificacao = Calendar.getInstance().getTime();
+		String dataFormatada = sdf.format(dataModificacao);
+		produtoSalvo.setDataModificacao(dataFormatada);
+		
 		return prodRepo.save(produtoSalvo);
 	}
 	
