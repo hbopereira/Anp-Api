@@ -3,6 +3,7 @@ package com.example.anpapi.service;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +63,10 @@ public class ProdutoService {
 			throw new EmptyResultDataAccessException(1);
 		}
 		return produtoSalvo;
+	}
+	
+	public void obterCodigoBarrasAleatorio() {	
+		Random r = new Random();
+		r.nextInt();
 	}
 }

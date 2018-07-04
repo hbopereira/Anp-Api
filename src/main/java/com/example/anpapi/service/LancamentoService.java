@@ -52,7 +52,7 @@ public class LancamentoService {
 	@Autowired
 	private Mailer mailer;
 	
-	@Scheduled(cron = "0 0 11 * * * ")
+	@Scheduled(cron = "0 27 12 * * * ")
 	public void avisarSobreLanacamentosVencidos() {
 		
 		if (logger.isDebugEnabled()) {
